@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dong</title>
+</head>
+<body>
+
+<div class="row">
+    <div class="column">
+        <h2>Info: </h2>
+        <h3>Station Number: {{station}}</h3>
+        <h3>Conveyor: {{conveyor}}</h3>
+        <h3>Robot: {{robot}}</h3>
+
+    </div>
+
+    <div class="column">
+
+        <h2>Process</h2>
+        <h3>Subscribe Before Run</h3>
+        <a href="{{ url_for('subscribe_event') }}">Subscribe</a>
+        <a href="{{ url_for('subscribe_event_robot') }}">SubscribeRobot</a>
+        <h3>Unsubscribe</h3>
+        <a href="{{ url_for('unsubscribe_event') }}">Unsubscribe</a>
+        <a href="{{ url_for('unsubscribe_event_robot') }}">UnsubscribeRobot</a>
+        <h3>Calibrate Robot Before Run</h3>
+        <a href="{{ url_for('calibrate') }}">CalibrateRobot</a>
+        <p></p>
+
+    </div>
+
+<!--    <div class="column">-->
+
+<!--        <h2>Manual transfer</h2>-->
+<!--        <a href="{{ url_for('subscribe_event') }}">Subscribe</a>-->
+<!--        <a href="{{ url_for('unsubscribe_event') }}">Unsubscribe</a>-->
+<!--        <a href="{{ url_for('calibrate') }}">CalibrateRobot</a>-->
+<!--        <p></p>-->
+
+<!--    </div>-->
+
+</div>
+
+<div class="row">
+    <h2>Selected Draw Options:</h2>
+    <form method="post">
+       {% for option in options %}
+           <input type="checkbox" name="choices" value="{{ option }}"> {{ option }}<br>
+       {% endfor %}
+       <br><br>
+       <input type="submit" value="Submit">
+   </form>
+
+   <h2>Selected Available Order:</h2>
+    <form action="{{ url_for('clear_history') }}" method="get">
+       <input type="submit" value="Clear History">
+   </form>
+   <ul>
+       {% for order in history %}
+            {% if order != [] %}
+                <li>{{ order }}</li>
+            {% endif %}
+       {% endfor %}
+   </ul>
+</div>
+</body>
+</html>
