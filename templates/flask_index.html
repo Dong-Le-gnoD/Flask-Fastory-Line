@@ -2,59 +2,128 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dong</title>
+    <style>
+      body {
+         font-family: 'Arial', sans-serif;
+         background-color: #f4f4f4;
+         margin: 20px;
+      }
+
+      h1, h2 {
+         color: #333;
+      }
+
+      form {
+         background-color: #fff;
+         padding: 20px;
+         border-radius: 8px;
+         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+
+      table {
+         width: 100%;
+         border-collapse: collapse;
+         margin-bottom: 20px;
+      }
+
+      th, td {
+         border: 1px solid #ddd;
+         padding: 10px;
+         text-align: left;
+      }
+
+      input[type="radio"] {
+         margin-right: 5px;
+      }
+
+      input[type="submit"], button {
+         background-color: #4caf50;
+         color: white;
+         padding: 10px 15px;
+         border: none;
+         border-radius: 4px;
+         cursor: pointer;
+      }
+
+      input[type="submit"]:hover, button:hover {
+         background-color: #45a049;
+      }
+
+      ul {
+         list-style-type: none;
+         padding: 0;
+      }
+
+      li {
+         background-color: #fff;
+         padding: 10px;
+         margin: 5px 0;
+         border-radius: 4px;
+         box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+      }
+   </style>
 </head>
 <body>
 
-<div class="row">
-    <div class="column">
-        <h2>Info: </h2>
-        <h3>Station Number: {{station}}</h3>
-        <h3>Conveyor: {{conveyor}}</h3>
-        <h3>Robot: {{robot}}</h3>
 
-    </div>
+    <table>
+         <tr>
+            <td>
+                <h2>Info: </h2>
+                <p><strong>Station Number:</strong> {{station}}</p>
+                <p><strong>Conveyor:</strong> {{conveyor}}</p>
+                <p><strong>Robot:</strong> {{robot}}</p>
+            </td>
+            <td>
+                <p><strong>Subscribe Before Run</strong></p>
+                <div>
+                    <a href="{{ url_for('subscribe_event') }}"><button>Subscribe</button></a>
+                    <a href="{{ url_for('subscribe_event_robot') }}"><button>SubscribeRobot</button></a>
+                </div>
+            </td>
+            <td>
+                <p><strong>Unsubscribe</strong></p>
+                <div>
+                    <a href="{{ url_for('unsubscribe_event') }}"><button>Unsubscribe</button></a>
+                    <a href="{{ url_for('unsubscribe_event_robot') }}"><button>UnsubscribeRobot</button></a>
+                </div>
+            </td>
+            <td>
+                <p><strong>Calibrate Robot Before Run</strong></p>
+                <div>
+                    <a href="{{ url_for('calibrate') }}"><button>CalibrateRobot</button></a>
+                </div>
+            </td>
+         </tr>
+      </table>
 
-    <div class="column">
-
-        <h2>Process</h2>
-        <h3>Subscribe Before Run</h3>
-        <a href="{{ url_for('subscribe_event') }}">Subscribe</a>
-        <a href="{{ url_for('subscribe_event_robot') }}">SubscribeRobot</a>
-        <h3>Unsubscribe</h3>
-        <a href="{{ url_for('unsubscribe_event') }}">Unsubscribe</a>
-        <a href="{{ url_for('unsubscribe_event_robot') }}">UnsubscribeRobot</a>
-        <h3>Calibrate Robot Before Run</h3>
-        <a href="{{ url_for('calibrate') }}">CalibrateRobot</a>
-        <p></p>
-
-    </div>
-
-<!--    <div class="column">-->
-
-<!--        <h2>Manual transfer</h2>-->
-<!--        <a href="{{ url_for('subscribe_event') }}">Subscribe</a>-->
-<!--        <a href="{{ url_for('unsubscribe_event') }}">Unsubscribe</a>-->
-<!--        <a href="{{ url_for('calibrate') }}">CalibrateRobot</a>-->
-<!--        <p></p>-->
-
-<!--    </div>-->
-
-</div>
-
-<div class="row">
-    <h2>Selected Draw Options:</h2>
+<!--    <h2>Select Draw Options:</h2>-->
     <form method="post">
-       {% for option in options %}
-           <input type="checkbox" name="choices" value="{{ option }}"> {{ option }}<br>
-       {% endfor %}
-       <br><br>
+
+
+        <h2>Select Draw Options:</h2>
+        <table>
+         <tr>
+            {% for option in options %}
+               <td>
+                  <input type="radio" name="choices" value="{{ option }}"> {{ option }}
+               </td>
+               {% if loop.index % 3 == 0 %}
+                  </tr><tr>
+               {% endif %}
+            {% endfor %}
+         </tr>
+        </table>
+
        <input type="submit" value="Submit">
    </form>
 
-   <h2>Selected Available Order:</h2>
+    <h2>History Order:</h2>
     <form action="{{ url_for('clear_history') }}" method="get">
-       <input type="submit" value="Clear History">
+
+        <input type="submit" value="Clear History">
    </form>
    <ul>
        {% for order in history %}
@@ -63,6 +132,6 @@
             {% endif %}
        {% endfor %}
    </ul>
-</div>
+
 </body>
 </html>

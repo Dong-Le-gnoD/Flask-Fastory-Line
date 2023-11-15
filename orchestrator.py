@@ -22,7 +22,6 @@ class Orchestrator(object):
         self.pallets = {}
 
         self.order_list = []
-        self.draw_one = -1
         self.calibrate()
 
         for i in range(5):
@@ -64,12 +63,12 @@ class Orchestrator(object):
         else:
             print(f"Z1 arrive")
             self.zones["1"] = pallet_id
-
             self.pallets[str(pallet_id)] = Pallet(str(pallet_id))
             while True:
                 if len(self.order_list) != 0:
                     self.pallets[str(pallet_id)].add_order(self.order_list[0])
                     self.order_list.pop(0)
+
                     if self.zones["2"] == "-1":
                         self.trans_zone("1", "2")
 
@@ -79,14 +78,18 @@ class Orchestrator(object):
                 time.sleep(1)
 
 
+
+
     def conveyor_event_z2(self, pallet_id):
         # leaving
         if pallet_id == "-1":
             print(f"Z2 leaving")
             self.zones["2"] = "-1"
 
-            if self.zones["1"] != "-1":
+            if (self.zones["1"] != "-1") and (self.pallets[self.zones["1"]].order != ""):
+            # if self.zones["1"] != "-1":
                 self.trans_zone("1", "2")
+
         # arrive
         else:
             print(f"Z2 arrive")
@@ -144,7 +147,7 @@ class Orchestrator(object):
             self.zones["5"] = pallet_id
 
     def start_draw(self, pallet_id):
-        num_draw = self.pallets[str(pallet_id)].draw_num
+        # num_draw = self.pallets[str(pallet_id)].draw_num
         list_draw = self.pallets[str(pallet_id)].order
         print("start draw")
         # self.draw_one = 0
@@ -272,8 +275,8 @@ class Pallet:
     def __init__(self,id):
         self.palletID = id
         self.order = ""
-        self.draw_num = 0
+        # self.draw_num = 0
 
     def add_order(self, order):
         self.order = order
-        self.draw_num = len(order)
+        # self.draw_num = len(order)

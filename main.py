@@ -65,3 +65,4 @@ def unsubscribe_event_robot():
 
 if __name__ == '__main__':
     app.run(host="192.168.0.65", port=5000)
+    # app.run(debug=True)
